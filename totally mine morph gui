@@ -1,0 +1,490 @@
+repeat task.wait() until getgenv().DoorsMorpher ~= true
+getgenv().DoorsMorpher = true
+
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+getgenv().WalkSpeed = nil
+getgenv().JumpPower = nil
+if getgenv().DoorsMorphCon ~= nil then
+    getgenv().DoorsMorphCon:Disconnect()
+    wait(.25)
+    getgenv().DoorsMorphCon = nil
+end
+if getgenv().RunningCon ~= nil then
+    getgenv().RunningCon:Disconnect()
+    wait(.25)
+    getgenv().RunningCon = nil
+end    
+game:GetService("Workspace")["Ambience_Seek"].Playing = false
+if getgenv().SelectedMorph == "Seek" then
+    game.Workspace.MorphedEntity.Figure.FootstepsFar.Playing = false
+    game.Workspace.MorphedEntity.Figure.Footsteps.Playing = false
+end
+for i,v in pairs(game.Workspace:GetChildren()) do
+    if v.Name == "MorphedEntity" then
+        v:Destroy()
+    end
+end
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules:GetDescendants()) do
+    if v:IsA("Sound") then
+        v.Playing = false
+    end
+end
+for i,v in pairs(game:GetService("ReplicatedStorage").ClientModules.EntityModules:GetDescendants()) do
+    if v:IsA("Sound") then
+        v.Playing = false
+    end
+end
+for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if v:IsA("MeshPart") then
+        v.Transparency = 0
+    end
+    if v:IsA("Part") then
+            v.Transparency = 0
+    end
+    if v:IsA("Accessory") then
+        v:Destroy()
+    end
+    game.Players.LocalPlayer.Character.Head.face.Transparency = 0
+end
+game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
+
+local MorphList = {"Rush", "Ambush", "A60", "Seek", "Screech", "Timothy", "Dupe", "Glitch", "Figure", "Halt", "Sally", "Shadow"}
+
+local Window = Rayfield:CreateWindow({Name = "Doors Morphs", LoadingTitle = "Doors Morph script loading using Rayfield Interface Suite", LoadingSubtitle = "by WaW#9633 and Andreas Is Lame ™#2333", ConfigurationSaving = { Enabled = false, FolderName = false, FileName = "Doors Morph made by WaW#9633 and Andreas Is Lame ™#2333" }, Discord = {Enabled = false, Invite = "cj3SyncDGr", RememberJoins = false }, KeySystem = false, })
+
+local Morphs = Window:CreateTab("Morphs", 4370345144)
+local Settings = Window:CreateTab("Settings", 8285095937)
+local Misc = Window:CreateTab("Misc", 9692125126)
+
+local Dropdown = Morphs:CreateDropdown({
+    Name = "Select Morph",
+    Options = MorphList,
+    CurrentOption = "None",
+    Callback = function(Option)
+        getgenv().SelectedMorph = Option
+    end,
+})
+
+local Button = Morphs:CreateButton({
+    Name = "Morph",
+    Callback = function()
+        if getgenv().RunningCon ~= nil then
+            getgenv().RunningCon:Disconnect()
+            wait(.25)
+            getgenv().RunningCon = nil
+        end    
+        local MorphedEntity = nil
+        for i,v in pairs(game.Workspace:GetChildren()) do
+            if v.Name == "MorphedEntity" then
+                v:Destroy()
+            end
+        end
+        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+        for i,v in pairs(game:GetService("ReplicatedStorage").ClientModules.EntityModules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+        for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+            if v:IsA("MeshPart") then
+                v.Transparency = 1
+            end
+            if v:IsA("Part") then
+				v.Transparency = 1
+            end
+            if v:IsA("Accessory") then
+                v:Destroy()
+            end
+            game.Players.LocalPlayer.Character.Head.face.Transparency = 1
+        end
+        if getgenv().SelectedMorph == "Glitch" then
+            MorphedEntity = game:GetObjects("rbxassetid://12381941734")[1]
+            local Anim = game:GetService("ReplicatedStorage").Entities.Glitch.Animations:Clone()
+            Anim.Parent = MorphedEntity
+            MorphedEntity.Parent = game.Workspace
+            MorphedEntity.Name = "MorphedEntity"
+            MorphedEntity.AnimationController:LoadAnimation(MorphedEntity.Animations.Run):Play(0.1000001, 1, 0.5)
+            game:GetService("ReplicatedStorage").ClientModules.EntityModules.Glitch.Sound.Looped = true
+            game:GetService("ReplicatedStorage").ClientModules.EntityModules.Glitch.Sound.PlaybackSpeed = 0.025
+            game:GetService("ReplicatedStorage").ClientModules.EntityModules.Glitch.Sound.Volume = 1.5
+            game:GetService("ReplicatedStorage").ClientModules.EntityModules.Glitch.Sound:Play()
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    MorphedEntity:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 2.75, -1.25))
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Screech" then
+            MorphedEntity = game:GetService("ReplicatedStorage").Entities.Screech:Clone()
+            MorphedEntity.Parent = game.Workspace
+            MorphedEntity.Name = "MorphedEntity"
+            game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules.Screech.Caught.Looped = true
+            game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules.Screech.Caught:Play()
+            MorphedEntity.AnimationController:LoadAnimation(MorphedEntity.Animations.Idle):Play()
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    MorphedEntity:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0.2, -1.25))
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Timothy" then
+            MorphedEntity = game:GetObjects("rbxassetid://12381970000")[1]
+            local Anim = game:GetService("ReplicatedStorage").Entities.Spider.Animations:Clone()
+            Anim.Parent = MorphedEntity        
+            MorphedEntity.Parent = game.Workspace
+            MorphedEntity.Name = "MorphedEntity"
+            game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules.SpiderJumpscare.Scare.Looped = true
+            game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules.SpiderJumpscare.Scare.Volume = 1.5
+            game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules.SpiderJumpscare.Scare:Play()
+            MorphedEntity.AnimationController:LoadAnimation(MorphedEntity.Animations.Walk):Play(0.10000001, 1, 1.5)
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    MorphedEntity:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, -2.65, -1.25))
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Halt" then
+            local RotateAxis = 0
+            MorphedEntity = game:GetService("ReplicatedStorage").Entities.Shade:Clone()
+            MorphedEntity.Parent = game.Workspace
+            MorphedEntity.Name = "MorphedEntity"
+			game:GetService("ReplicatedStorage").ClientModules.EntityModules.Shade.Music.Looped = true
+            game:GetService("ReplicatedStorage").ClientModules.EntityModules.Shade.Music:Play()
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    MorphedEntity.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.fromEulerAnglesXYZ(0, RotateAxis, 0) + Vector3.new(0, 2, 0)
+                    RotateAxis = RotateAxis + 0.025
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Rush" then
+            local Rush = game:GetObjects("rbxassetid://12382035955")[1]
+            Rush.Name = "MorphedEntity"
+            Rush.Parent = game.Workspace
+            Rush.Torso.Anchored = true
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    Rush:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 1, 0))
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Ambush" then
+            local Ambush = game:GetObjects("rbxassetid://12227536887")[1]
+            Ambush.Name = "MorphedEntity"
+            Ambush.Parent = game.Workspace
+            Ambush.Torso.Anchored = true
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    Ambush:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 1, 0))
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Dupe" then
+            local Dupe = game:GetObjects("rbxassetid://12382245172")[1]
+            Dupe.Name = "MorphedEntity"
+            Dupe.Parent = game.Workspace
+            Dupe.Torso.Anchored = true
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    Dupe:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 1, 0))
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Seek" then
+            MorphedEntity = game:GetObjects("rbxassetid://12388758648")[1]
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+            MorphedEntity.Name = "MorphedEntity"
+            MorphedEntity.Parent = game.ReplicatedStorage
+            local emergeAnim = MorphedEntity.SeekRig.AnimationController:LoadAnimation(MorphedEntity.SeekRig.Animations.raise)
+            game:GetService("Workspace")["Ambience_Seek"]:Play()
+            game:GetService("Workspace")["Ambience_Seek"].Looped = true
+            MorphedEntity.Figure.CanCollide = false
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20
+                    MorphedEntity:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0.2, 0))
+                end)
+            end)
+            for i,v in pairs(MorphedEntity.SeekRig:GetChildren()) do
+                if v.Name == "StringCheese" then
+                    v.Enabled = true
+                end
+            end
+            emergeAnim:Play()
+            MorphedEntity.Parent = game.Workspace
+            wait(6.85)
+            for i,v in pairs(MorphedEntity.SeekRig:GetChildren()) do
+                if v.Name == "StringCheese" then
+                    v.Enabled = false
+                end
+            end
+            wait(.15)
+			emergeAnim:Stop()
+            MorphedEntity.SeekRig.AnimationController:LoadAnimation(MorphedEntity.SeekRig.Animations.run):Play()
+            MorphedEntity.Figure.Footsteps.Looped = true
+            MorphedEntity.Figure.Footsteps:Play()
+            MorphedEntity.Figure.FootstepsFar.Looped = true
+            MorphedEntity.Figure.FootstepsFar:Play()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+            local Pos = MorphedEntity.SeekRig.SeekPuddle.Position.Y - 2.5
+            repeat
+                MorphedEntity.SeekRig.SeekPuddle.Position = MorphedEntity.SeekRig.SeekPuddle.Position - Vector3.new(0, 0.035, 0) wait()
+                MorphedEntity.SeekRig.SeekPuddle.ParticleHitbox.Position = MorphedEntity.SeekRig.SeekPuddle.ParticleHitbox.Position - Vector3.new(0, 0.035, 0) wait()
+            until MorphedEntity.SeekRig.SeekPuddle.Position.Y < Pos
+            MorphedEntity.SeekRig.SeekPuddle:Destroy()
+        end
+        if getgenv().SelectedMorph == "Figure" then
+            for i,v in pairs(game:GetService("ReplicatedStorage").FootstepsClient:GetDescendants()) do
+                if v:IsA("Sound") then
+                    if math.random(1, 2) == 1 then
+                        v.SoundId = "rbxassetid://8465836347"
+                    else
+                        v.SoundId = "rbxassetid://8465836233"
+                    end
+                end
+            end
+            MorphedEntity = game:GetObjects("rbxassetid://12394407067")[1]
+            MorphedEntity.Parent = game.Workspace
+            MorphedEntity.Name = "MorphedEntity"
+            local WalkAnim = Instance.new("Animation", MorphedEntity.Animations)
+            WalkAnim.AnimationId = "rbxassetid://8465893113"
+            local Walk = MorphedEntity.AnimationController:LoadAnimation(WalkAnim)
+            local WalkAnim1 = Instance.new("Animation", MorphedEntity.Animations)
+            WalkAnim1.AnimationId = "rbxassetid://6535654797"
+            local Walk1 = MorphedEntity.AnimationController:LoadAnimation(WalkAnim1)
+            local SearchAnim = Instance.new("Animation", MorphedEntity.Animations)
+            SearchAnim.AnimationId = "rbxassetid://8369184411"
+            local Search = MorphedEntity.AnimationController:LoadAnimation(SearchAnim)
+            local EatHead = Instance.new("Animation", MorphedEntity.Animations)
+            EatHead.AnimationId = "rbxassetid://6537117205"
+            local EatHeadPlay = MorphedEntity.AnimationController:LoadAnimation(EatHead)
+            task.spawn(function()
+                game:GetService("RunService").RenderStepped:Connect(function()
+                    MorphedEntity:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 4.5, 0))
+                end)
+            end)
+            getgenv().Speed = 0
+            task.spawn(function()
+                while getgenv().Speed == 0 do
+                    Walk:Stop() Walk1:Stop() Search:Play() EatHeadPlay:Stop()
+                    wait(6.5)
+                end
+            end)
+            task.spawn(function()
+                getgenv().RunningCon = game.Players.LocalPlayer.Character.Humanoid.Running:Connect(function(speed)
+                    getgenv().Speed = 0.5
+                    wait()
+                    if speed == 0 then
+                        getgenv().Speed = 0
+                        Walk:Stop() Walk1:Stop()
+                        getgenv().DecapitateChance = math.random(1, 3)
+                        if getgenv().DecapitateChance == 3 then
+                            while getgenv().Speed == 0 do
+                                Walk:Stop() Walk1:Stop() EatHeadPlay:Play() Search:Stop()
+                                wait(3.25)
+                            end
+                        else
+                            while getgenv().Speed == 0 do
+								Walk:Stop() Walk1:Stop() Search:Play() EatHeadPlay:Stop()
+                                wait(6.5)
+                            end
+                        end
+                    else
+                        getgenv().Speed = 0.9
+                        getgenv().Speed = 1
+                        Walk:Play() Walk1:Play() Search:Stop() EatHeadPlay:Stop()
+                    end
+                end)
+            end)
+        end
+        if getgenv().SelectedMorph == "Sally" then
+            local Sally = game:GetObjects("rbxassetid://12395203064")[1]
+            Sally.Name = "MorphedEntity"
+            Sally.Parent = game.Workspace
+            Sally.Torso.Anchored = true
+            game:GetService("RunService").RenderStepped:Connect(function()
+                Sally:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 0))
+            end)
+        end
+        if getgenv().SelectedMorph == "A60" then
+            local a60 = game:GetObjects("rbxassetid://12395185257")[1]
+            a60.Name = "MorphedEntity"
+            a60.Parent = game.Workspace
+            a60.Torso.Anchored = true
+            game:GetService("RunService").RenderStepped:Connect(function()
+                a60:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-3, 5, -27.5))
+            end)
+        end
+        if getgenv().SelectedMorph == "Shadow" then
+            local Shade = Instance.new("Part")
+            local Board = Instance.new("BillboardGui", Shade)
+            local Image = Instance.new("ImageLabel", Board)
+            Board.Size = UDim2.new(0, 200, 0, 500)
+            Shade.Transparency = 1
+            Shade.CanCollide = false
+            Image.Image = "rbxassetid://12403278756"
+            Shade.Name = "MorphedEntity"
+            Shade.Parent = game.Workspace
+            Shade.Anchored = true
+            game:GetService("RunService").RenderStepped:Connect(function()
+                Shade:PivotTo(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 0))
+            end)
+        end
+    end,
+})
+
+local Button = Morphs:CreateButton({
+    Name = "Unmorph",
+    Callback = function()
+        if getgenv().RunningCon ~= nil then
+            getgenv().RunningCon:Disconnect()
+            wait(.25)
+            getgenv().RunningCon = nil
+        end    
+        game:GetService("Workspace")["Ambience_Seek"].Playing = false
+        if getgenv().SelectedMorph == "Seek" then
+            game.Workspace.MorphedEntity.Figure.FootstepsFar.Playing = false
+            game.Workspace.MorphedEntity.Figure.Footsteps.Playing = false
+        end
+        for i,v in pairs(game.Workspace:GetChildren()) do
+            if v.Name == "MorphedEntity" then
+                v:Destroy()
+            end
+        end
+        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+        for i,v in pairs(game:GetService("ReplicatedStorage").ClientModules.EntityModules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+        for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+            if v:IsA("MeshPart") then
+                v.Transparency = 0
+            end
+            if v:IsA("Part") then
+                    v.Transparency = 0
+            end
+            if v:IsA("Accessory") then
+                v:Destroy()
+            end
+            game.Players.LocalPlayer.Character.Head.face.Transparency = 0
+        end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
+    end,
+})
+
+local Button = Morphs:CreateButton({
+    Name = "Stop Morph Sounds",
+    Callback = function()
+	game:GetService("Workspace")["Ambience_Seek"].Playing = false
+        if getgenv().SelectedMorph == "Seek" then
+            game.Workspace.MorphedEntity.Figure.FootstepsFar.Playing = false
+            game.Workspace.MorphedEntity.Figure.Footsteps.Playing = false
+        end
+        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"].RemoteListener.Modules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+        for i,v in pairs(game:GetService("ReplicatedStorage").ClientModules.EntityModules:GetDescendants()) do
+            if v:IsA("Sound") then
+                v.Playing = false
+            end
+        end
+    end,
+})
+
+local ThirdPB = Settings:CreateToggle({
+    Name = "Third Person",
+    CurrentValue = false,
+    Callback = function(Value)
+        if Value == true then
+            task.spawn(function()
+                getgenv().DoorsMorphCon = game:GetService("RunService").RenderStepped:Connect(function()
+                    game.Workspace.CurrentCamera.CFrame = (game.Players.LocalPlayer.Character.Head.CFrame * CFrame.Angles(math.rad(-10),0,0)) * CFrame.new(0, 1.5, 10)
+                end)
+            end)
+        else
+            getgenv().DoorsMorphCon:Disconnect()
+            task.wait()
+            getgenv().DoorsMorphCon = nil
+        end
+    end,
+})
+
+--[[local FirstPS = Settings:CreateToggle({
+    Name = "Morph First Person",
+    CurrentValue = false,
+    Callback = function(Value)
+        if Value == true then
+            if getgenv().DoorsMorphCon ~= nil then
+                getgenv().DoorsMorphCon:Disconnect()
+                task.wait()
+                getgenv().DoorsMorphCon = nil
+            end
+            if getgenv().SelectedMorph == "Figure" then
+                task.spawn(function()
+                    getgenv().DoorsMorphCon = game:GetService("RunService").RenderStepped:Connect(function()
+                        game.Workspace.CurrentCamera.CFrame = game.Workspace.MorphedEntity.Head.CFrame
+                    end)
+                end)
+            end
+        else
+            if getgenv().DoorsMorphCon ~= nil then
+                getgenv().DoorsMorphCon:Disconnect()
+                task.wait()
+                getgenv().DoorsMorphCon = nil
+            end
+        end
+    end,
+})]]
+
+local WSSlider = Misc:CreateSlider({
+    Name = "Walk Speed Changer",
+    Range = {0, 22},
+    Increment = 1,
+    Suffix = "Walkspeed",
+    CurrentValue = 14,
+    Callback = function(Value)
+        getgenv().WalkSpeed = Value
+        while getgenv().WalkSpeed == Value do wait()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        end
+    end,
+})
+
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+local WSSlider = Misc:CreateSlider({
+    Name = "Jump Power Changer",
+    Range = {0, 50},
+    Increment = 1,
+    Suffix = "Jumppower",
+    CurrentValue = 0,
+    Callback = function(Value)
+        getgenv().JumpPower = Value
+        while getgenv().JumpPower == Value do wait()
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+        end
+    end,
+})
+
+local InfJump = Misc:CreateKeybind({
+    Name = "Jump Keybind",
+    CurrentKeybind = "Space",
+    HoldToInteract = false,
+    Callback = function()
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+    end,
+})
